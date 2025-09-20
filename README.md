@@ -1,4 +1,4 @@
-# Rondellen tvätten
+# Rondellentvätten
 
 Detta är en redesign av en redan existerande app för rondellentvätten i Borås.
 Syftet med detta projekt är att skapa en bättre och modernare app.
