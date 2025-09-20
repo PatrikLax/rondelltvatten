@@ -1,6 +1,6 @@
-# Rondellentvätten
+# Rondelltvätten
 
-Detta är en redesign av en redan existerande app för rondellentvätten i Borås.
+Detta är en redesign av en redan existerande app för rondelltvätten i Borås.
 Syftet med detta projekt är att skapa en bättre och modernare app.
 
 ## Get started
