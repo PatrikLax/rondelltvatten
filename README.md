@@ -16,3 +16,8 @@ Syftet med detta projekt är att skapa en bättre och modernare app.
    ```bash
    npx expo start
    ```
+
+
+expo components
+
+Haptics
