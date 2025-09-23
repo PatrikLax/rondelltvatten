@@ -1,5 +1,7 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { BlurView } from "expo-blur";
 import * as Haptics from "expo-haptics";
+import { router } from "expo-router";
 import { JSX, useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -49,6 +51,7 @@ export default function WashScreen() {
       toggleWashSpot(selectedSpot);
       setModalVisible(false);
       setSelectedSpot(null);
+      router.push("/modal");
     }
   };
 
@@ -56,7 +59,6 @@ export default function WashScreen() {
     setModalVisible(false);
     setSelectedSpot(null);
   };
-
 
   const getStatusIcon = (isOccupied: boolean): JSX.Element => {
     return isOccupied ? (
@@ -68,8 +70,12 @@ export default function WashScreen() {
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => {resetWashSpots()}}>
-      <Text style={styles.header}>Välj tvättplats</Text>
+      <Pressable
+        onPress={() => {
+          resetWashSpots();
+        }}
+      >
+        <Text style={styles.header}>Välj tvättplats</Text>
       </Pressable>
 
       {[1, 2, 3, 4, 5, 6].map((spotNumber) => (
@@ -104,12 +110,12 @@ export default function WashScreen() {
       ))}
 
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={handleCancel}
       >
-        <View style={styles.modalContainer}>
+        <BlurView intensity={30} tint="dark" experimentalBlurMethod="dimezisBlurView" style={styles.modalContainer}>
           <Text style={styles.header}>
             Du har valt tvättplats {selectedSpot}
           </Text>
@@ -122,7 +128,7 @@ export default function WashScreen() {
               <Text style={styles.text}>Avbryt</Text>
             </Pressable>
           </View>
-        </View>
+        </BlurView>
       </Modal>
     </View>
   );
@@ -173,7 +179,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
   },
   modalButtonContainer: {
     flexDirection: "row",
