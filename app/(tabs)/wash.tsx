@@ -1,22 +1,23 @@
+import ConfirmationModal from "@/components/ui/confirmModal";
+import StartWashingModal from "@/components/ui/startWashingModal";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { BlurView } from "expo-blur";
 import * as Haptics from "expo-haptics";
-import { router } from "expo-router";
 import { JSX, useState } from "react";
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type WashSpotsState = {
   [key: number]: boolean;
 };
 
 export default function WashScreen() {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+  const [startWashingVisible, setStartWashingVisible] = useState(false);
   const [selectedSpot, setSelectedSpot] = useState<number | null>(null);
   const [washSpots, setWashSpots] = useState<WashSpotsState>({
     1: false, // false = ledig
     2: false,
     3: false,
-    4: false,
+    4: true,
     5: false,
     6: false,
   });
@@ -27,7 +28,7 @@ export default function WashScreen() {
       1: false,
       2: false,
       3: false,
-      4: false,
+      4: true,
       5: false,
       6: false,
     });
@@ -43,20 +44,27 @@ export default function WashScreen() {
 
   const handleSpotPress = (spotNumber: number): void => {
     setSelectedSpot(spotNumber);
-    setModalVisible(true);
+    setConfirmModalVisible(true);
   };
 
   const handleConfirm = (): void => {
     if (selectedSpot !== null) {
       toggleWashSpot(selectedSpot);
-      setModalVisible(false);
-      setSelectedSpot(null);
-      router.push("/modal");
+      setConfirmModalVisible(false);
+      setStartWashingVisible(true);
     }
   };
 
   const handleCancel = (): void => {
-    setModalVisible(false);
+    setConfirmModalVisible(false);
+    setSelectedSpot(null);
+  };
+
+  const handleFinishWashing = (): void => {
+    if (selectedSpot !== null) {
+      toggleWashSpot(selectedSpot);
+    }
+    setStartWashingVisible(false);
     setSelectedSpot(null);
   };
 
@@ -87,7 +95,7 @@ export default function WashScreen() {
             {
               backgroundColor: washSpots[spotNumber]
                 ? "#adb5fc46"
-                : "#adb5fcff",
+                : "#59bcd0ff",
             },
             pressed && styles.pressablePressed,
           ]}
@@ -109,27 +117,17 @@ export default function WashScreen() {
         </Pressable>
       ))}
 
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={handleCancel}
-      >
-        <BlurView intensity={30} tint="dark" experimentalBlurMethod="dimezisBlurView" style={styles.modalContainer}>
-          <Text style={styles.header}>
-            Du har valt tvättplats {selectedSpot}
-          </Text>
-          <Text style={styles.text}>Bekräfta för att starta tvätten</Text>
-          <View style={styles.modalButtonContainer}>
-            <Pressable style={styles.confirmButton} onPress={handleConfirm}>
-              <Text style={styles.text}>Bekräfta</Text>
-            </Pressable>
-            <Pressable style={styles.cancelButton} onPress={handleCancel}>
-              <Text style={styles.text}>Avbryt</Text>
-            </Pressable>
-          </View>
-        </BlurView>
-      </Modal>
+      <ConfirmationModal
+        visible={confirmModalVisible}
+        spotNumber={selectedSpot}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
+      <StartWashingModal
+        visible={startWashingVisible}
+        selectedSpot={selectedSpot}
+        onFinishWashing={handleFinishWashing}
+      />
     </View>
   );
 }
@@ -138,7 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#9ba4f5",
+    backgroundColor: "#3ba2b6",
     gap: 20,
     paddingTop: 20,
   },
@@ -174,23 +172,5 @@ const styles = StyleSheet.create({
   pressablePressed: {
     opacity: 0.8,
     transform: [{ scale: 0.96 }],
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalButtonContainer: {
-    flexDirection: "row",
-    gap: 20,
-    marginTop: 20,
-  },
-  confirmButton: {
-    backgroundColor: "#28a745",
-    padding: 10,
-  },
-  cancelButton: {
-    backgroundColor: "#dc3545",
-    padding: 10,
   },
 });
