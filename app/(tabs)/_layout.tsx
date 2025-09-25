@@ -39,8 +39,8 @@ export default function TabLayout() {
         name="wash"
         options={{
           href: null,
-          title: 'Börja tvätta',
-          headerShown: true,
+          title: "Börja tvätta",
+          headerShown: false,
         }}
       />
     </Tabs>

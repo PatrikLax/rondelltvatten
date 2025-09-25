@@ -67,7 +67,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#9ba4f5ff",
+    justifyContent: "space-between",
+    paddingBottom: 50,
+    backgroundColor: "#3ba2b6",
   },
   header: {
     fontSize: 40,
@@ -89,13 +91,13 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "#007AFF",
+    backgroundColor: "#2e899bff",
     borderRadius: 5,
     minWidth: 250,
     alignItems: "center",
   },
   pressablePressed: {
-    backgroundColor: "#0056CC",
-    transform: [{scale: 0.96}],
+    backgroundColor: "#2e899b77",
+    transform: [{ scale: 0.96 }],
   },
 });
