@@ -1,7 +1,8 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import LottieView from "lottie-react-native";
+import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
@@ -10,7 +11,14 @@ export default function HomeScreen() {
   return (
     <>
       <View style={[styles.container, { paddingTop: insets.top + 5 }]}>
-        <Text style={styles.header}>Rondelltvätten</Text>
+        <LottieView
+          source={require("../../assets/animations/Bubbles.json")}
+          autoPlay
+          loop
+          style={[StyleSheet.absoluteFillObject, { opacity: 0.2 }]}
+          resizeMode="center"
+        />
+        <Text style={styles.header}>Rondelltvätten</Text>          
         <View style={styles.pressableContainer}>
           <Pressable
             style={({ pressed }) => [
@@ -48,6 +56,9 @@ export default function HomeScreen() {
             ]}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              Linking.openURL(
+                "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+              );
             }}
           >
             <Text style={styles.text}>Så här tvättar du</Text>
