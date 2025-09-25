@@ -11,7 +11,7 @@ import TimerClock from "./timer";
 interface StartWashingModalProps {
   visible: boolean;
   selectedSpot: number | null;
-  onFinishWashing: () => void;
+  onFinishWashing: (washTime: string, cost: string) => void;
 }
 
 export default function StartWashingModal({
@@ -21,13 +21,15 @@ export default function StartWashingModal({
 }: StartWashingModalProps) {
   const insets = useSafeAreaInsets();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [currentTime, setCurrentTime] = useState("0 min");
+  const [currentCost, setCurrentCost] = useState("0 kr");
 
   const handleFinishWashing = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onFinishWashing();
+    onFinishWashing(currentTime, currentCost);
   };
 
-  const handlePressAvsluta = () => {    
+  const handlePressAvsluta = () => {
     setShowConfirmModal(true);
   };
 
@@ -43,27 +45,34 @@ export default function StartWashingModal({
         <Text style={styles.header}>Tvättplats {selectedSpot}</Text>
         <Text style={styles.text}>Välj program och börja tvätta</Text>
         <View style={styles.infoContainer}>
-          <TimerClock startTimer={true} />
-          <PriceCounter startPriceCounter={true} />
+          <TimerClock 
+            startTimer={true} 
+            onTimeUpdate={setCurrentTime}
+          />
+          <PriceCounter 
+            startPriceCounter={true} 
+            onPriceUpdate={setCurrentCost}
+          />
         </View>
         <View style={styles.carwashIcon}>
           <MaterialCommunityIcons name="car-wash" size={200} color="#fff" />
         </View>
         <Pressable
-        onPress={handlePressAvsluta}
-        style={({ pressed }) => [
-          styles.pressable,
-          pressed && styles.pressablePressed,
-        ]}
-      >
-        
-        <Text style={styles.buttonText}>Avsluta tvätt</Text>
-      </Pressable>
+          onPress={handlePressAvsluta}
+          style={({ pressed }) => [
+            styles.pressable,
+            pressed && styles.pressablePressed,
+          ]}
+        >
+          <Text style={styles.buttonText}>Avsluta tvätt</Text>
+        </Pressable>
       </View>
       <ConfirmCloseWashModal
         visible={showConfirmModal}
         onConfirm={handleFinishWashing}
-        onCancel={() => {setShowConfirmModal(false)}}
+        onCancel={() => {
+          setShowConfirmModal(false);
+        }}
       />
     </Modal>
   );

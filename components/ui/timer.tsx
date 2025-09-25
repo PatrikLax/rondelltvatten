@@ -3,9 +3,10 @@ import { Text, StyleSheet } from 'react-native';
 
 interface TimerClockProps {
     startTimer: boolean;
+    onTimeUpdate?: (timeString: string) => void;
 }
 
-export default function TimerClock({ startTimer }: TimerClockProps) {
+export default function TimerClock({ startTimer, onTimeUpdate }: TimerClockProps) {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
@@ -19,6 +20,14 @@ export default function TimerClock({ startTimer }: TimerClockProps) {
     }
     return () => clearInterval(interval);
   }, [startTimer, seconds]);
+
+  useEffect(() => {
+    if (onTimeUpdate) {
+      const minutes = Math.floor(seconds / 60);
+      const timeString = minutes > 0 ? `${minutes} min` : `${seconds} sek`;
+      onTimeUpdate(timeString);
+    }
+  }, [seconds, onTimeUpdate]);
 
   const formatTime = (totalSeconds: number) => {
     const minutes = Math.floor(totalSeconds / 60);

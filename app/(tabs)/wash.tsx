@@ -2,6 +2,7 @@ import ConfirmationModal from "@/components/ui/confirmModal";
 import StartWashingModal from "@/components/ui/startWashingModal";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import * as Haptics from "expo-haptics";
+import { router } from "expo-router";
 import { JSX, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -21,18 +22,6 @@ export default function WashScreen() {
     5: false,
     6: false,
   });
-
-  // Endast för utveckling
-  const resetWashSpots = (): void => {
-    setWashSpots({
-      1: false,
-      2: false,
-      3: false,
-      4: true,
-      5: false,
-      6: false,
-    });
-  };
 
   const toggleWashSpot = (spotNumber: number): void => {
     setWashSpots((prev) => ({
@@ -60,13 +49,23 @@ export default function WashScreen() {
     setSelectedSpot(null);
   };
 
-  const handleFinishWashing = (): void => {
-    if (selectedSpot !== null) {
-      toggleWashSpot(selectedSpot);
-    }
-    setStartWashingVisible(false);
-    setSelectedSpot(null);
-  };
+  const handleFinishWashing = (washTime: string, cost: string): void => {
+  if (selectedSpot !== null) {
+    toggleWashSpot(selectedSpot);
+  }
+  setStartWashingVisible(false);
+
+  router.replace({
+    pathname: "/thankYou",
+    params: {
+      spotNumber: selectedSpot,
+      washTime: washTime,
+      cost: cost,
+    },
+  });
+
+  setSelectedSpot(null);
+};
 
   const getStatusIcon = (isOccupied: boolean): JSX.Element => {
     return isOccupied ? (
@@ -78,14 +77,7 @@ export default function WashScreen() {
 
   return (
     <View style={styles.container}>
-      <Pressable
-        onPress={() => {
-          resetWashSpots();
-        }}
-      >
-        <Text style={styles.header}>Välj tvättplats</Text>
-      </Pressable>
-
+      <Text style={styles.header}>Välj tvättplats</Text>
       {[1, 2, 3, 4, 5, 6].map((spotNumber) => (
         <Pressable
           key={spotNumber}
