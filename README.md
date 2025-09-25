@@ -18,6 +18,9 @@ Syftet med detta projekt är att skapa en bättre och modernare app.
    ```
 
 
-expo components
-
+## expo components
 Haptics
+Stack
+Statusbar
+BlurView
+

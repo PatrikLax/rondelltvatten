@@ -21,8 +21,8 @@ export default function Profile() {
       </Collapsible>
       <Collapsible title="Mina kunduppgifter">
         <View>
-          <Text style={styles.text}>Namn: Patrik</Text>
-          <Text style={styles.text}>Efternamn: Lax</Text>
+          <Text style={styles.text}>Namn: Dev</Text>
+          <Text style={styles.text}>Efternamn: Devson</Text>
           <Text style={styles.text}>Telefonnummer: 0707-123456</Text>
           <Text style={styles.text}>Placeholder: placeholder</Text>
         </View>
