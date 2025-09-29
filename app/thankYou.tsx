@@ -3,10 +3,34 @@ import { router, useLocalSearchParams } from "expo-router";
 import LottieView from "lottie-react-native";
 import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useEffect } from "react";
+import { visitApi } from "../api/visit";
+import { Visit } from "../api/types";
 
 export default function ThankYou() {
   const { spotNumber, washTime, cost } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    createVisit();
+  }, []);
+
+  const createVisit = async () => {
+    try {
+      const visitData: Visit = {
+        userId: 1,
+        spotNumber: spotNumber as string,
+        washTime: washTime as string,
+        cost: cost as string
+      };
+
+      const newVisit = await visitApi.createVisit(visitData);
+      console.log('Visit skapad:', newVisit);
+    } catch (error) {
+      console.error('Fel vid skapande av visit:', error);
+      Alert.alert('Fel', 'Kunde inte spara besöket');
+    }
+  };
 
   return (
     <View style={[styles.container, { paddingVertical: insets.top + 20 }]}>
