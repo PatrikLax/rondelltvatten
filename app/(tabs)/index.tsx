@@ -1,3 +1,4 @@
+import NotificationManager from "@/components/NotificationManager";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
@@ -10,6 +11,7 @@ export default function HomeScreen() {
 
   return (
     <>
+      <NotificationManager />
       <View style={[styles.container, { paddingTop: insets.top + 5 }]}>
         <LottieView
           source={require("../../assets/animations/Bubbles.json")}
@@ -18,7 +20,7 @@ export default function HomeScreen() {
           style={[StyleSheet.absoluteFillObject, { opacity: 0.2 }]}
           resizeMode="center"
         />
-        <Text style={styles.header}>Rondelltvätten</Text>          
+        <Text style={styles.header}>Rondelltvätten</Text>
         <View style={styles.pressableContainer}>
           <Pressable
             style={({ pressed }) => [
