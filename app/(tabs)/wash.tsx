@@ -2,9 +2,10 @@ import ConfirmationModal from "@/components/ui/confirmModal";
 import StartWashingModal from "@/components/ui/startWashingModal";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import * as Haptics from "expo-haptics";
+import * as Location from "expo-location";
 import { router } from "expo-router";
-import { JSX, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { JSX, useEffect, useState } from "react";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 
 type WashSpotsState = {
   [key: number]: boolean;
@@ -14,14 +15,81 @@ export default function WashScreen() {
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const [startWashingVisible, setStartWashingVisible] = useState(false);
   const [selectedSpot, setSelectedSpot] = useState<number | null>(null);
-  const [washSpots, setWashSpots] = useState<WashSpotsState>({
-    1: false, // false = ledig
-    2: false,
-    3: false,
-    4: true,
-    5: false,
-    6: false,
-  });
+  const [washSpots, setWashSpots] = useState<WashSpotsState>({});
+  const [isOnLocation, setIsOnLocation] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Plats nekad",
+          "Appen behöver tillgång till din plats för att fungera."
+        );
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+
+      console.log("Din position:", {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+
+      const insideSquare = isInsideSquare(
+        location.coords.latitude,
+        location.coords.longitude
+      );
+
+      setIsOnLocation(insideSquare);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (isOnLocation === null) return;
+
+    if (isOnLocation) {
+      setWashSpots({
+        1: false,
+        2: false,
+        3: false,
+        4: true,
+        5: false,
+        6: false,
+      });
+    } else {
+      setWashSpots({
+        1: true,
+        2: true,
+        3: true,
+        4: true,
+        5: true,
+        6: true,
+      });
+    }
+  }, [isOnLocation]);
+
+  const isInsideSquare = (userLat: number, userLon: number): boolean => {
+    const size = 0.002;
+
+    // Hemma
+    const targetLat1 = 57.7142257;
+    const targetLon1 = 12.7968675;
+
+    // Skola
+    const targetLat2 = 0;
+    const targetLon2 = 0;
+
+    const insideSquare1 =
+      Math.abs(userLat - targetLat1) < size &&
+      Math.abs(userLon - targetLon1) < size;
+
+    const insideSquare2 =
+      Math.abs(userLat - targetLat2) < size &&
+      Math.abs(userLon - targetLon2) < size;
+
+    return insideSquare1 || insideSquare2;
+  };
 
   const toggleWashSpot = (spotNumber: number): void => {
     setWashSpots((prev) => ({
@@ -50,22 +118,22 @@ export default function WashScreen() {
   };
 
   const handleFinishWashing = (washTime: string, cost: string): void => {
-  if (selectedSpot !== null) {
-    toggleWashSpot(selectedSpot);
-  }
-  setStartWashingVisible(false);
+    if (selectedSpot !== null) {
+      toggleWashSpot(selectedSpot);
+    }
+    setStartWashingVisible(false);
 
-  router.replace({
-    pathname: "/thankYou",
-    params: {
-      spotNumber: selectedSpot,
-      washTime: washTime,
-      cost: cost,
-    },
-  });
+    router.replace({
+      pathname: "/thankYou",
+      params: {
+        spotNumber: selectedSpot,
+        washTime: washTime,
+        cost: cost,
+      },
+    });
 
-  setSelectedSpot(null);
-};
+    setSelectedSpot(null);
+  };
 
   const getStatusIcon = (isOccupied: boolean): JSX.Element => {
     return isOccupied ? (
@@ -73,6 +141,10 @@ export default function WashScreen() {
     ) : (
       <MaterialCommunityIcons name="garage-open" size={30} color="#fff" />
     );
+  };
+
+  const toggleLocation = () => {
+    setIsOnLocation(!isOnLocation);
   };
 
   return (
@@ -108,7 +180,10 @@ export default function WashScreen() {
           </View>
         </Pressable>
       ))}
-
+      <Pressable onPress={toggleLocation} style={styles.pressable}>
+        <MaterialCommunityIcons name="map-marker" size={30} color="#fff" />
+        <Text style={styles.statusText}>Dev toggle position</Text>
+      </Pressable>
       <ConfirmationModal
         visible={confirmModalVisible}
         spotNumber={selectedSpot}

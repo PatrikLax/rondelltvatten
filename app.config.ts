@@ -40,6 +40,12 @@ const config: ExpoConfig = {
           backgroundColor: "#000000"
         }
       }
+    ],
+    [
+      "expo-location",
+      {
+        locationAlwaysAndWhenInUsePermission: "Rondelltvätten behöver ha åtkomst till din position för att avgöra om du är vid tvätten"
+      }
     ]
   ],
   experiments: {
