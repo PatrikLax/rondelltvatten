@@ -52,3 +52,4 @@ lista över genomförda krav.
 [x] Appen ska prata med ett Web-API för att hämta data.
 [] Appen ska förberedas för lansering till en Appstore (Deadline samma dag som kursen
 slutar)
+.
