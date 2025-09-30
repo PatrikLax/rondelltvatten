@@ -1,7 +1,7 @@
 public class CreateVisitDto
 {
     public int UserId { get; set; }
-    public string SpotNumber { get; set; } = string.Empty;
-    public string WashTime { get; set; } = string.Empty;
-    public string Cost { get; set; } = string.Empty;
+    public int SpotNumber { get; set; }
+    public int WashTime { get; set; }
+    public int Cost { get; set; }
 }
