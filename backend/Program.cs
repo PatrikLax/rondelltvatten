@@ -5,14 +5,17 @@ using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Ladda .env-filen (endast i development)
 if (builder.Environment.IsDevelopment())
 {
     Env.Load();
 }
 
+// Läs environment variables
 var apiKey = Environment.GetEnvironmentVariable("API_KEY") ?? "default-dev-key";
-var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 
+// VIKTIGT: Lyssna på rätt port för Render
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -30,8 +33,16 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Skapa databasen om den inte finns
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated();
+}
+
 app.UseCors();
 
+// API Key middleware
 app.Use(async (context, next) =>
 {
     var requestApiKey = context.Request.Headers["X-API-Key"].FirstOrDefault();
