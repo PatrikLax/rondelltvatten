@@ -19,19 +19,19 @@ Syftet med detta projekt är att skapa en bättre och modernare app.
 
 ## expo components
 
-Haptics
-BlurView
-Location
-Notifications
+- Haptics
+- BlurView
+- Location
+- Notifications
 
 ## RN components
 
-View
-Text
-Pressable
-Stylesheet
-Alert
-Scrollview
+- View
+- Text
+- Pressable
+- Stylesheet
+- Alert
+- Scrollview
 
 ## Krav för godkänt:
 
