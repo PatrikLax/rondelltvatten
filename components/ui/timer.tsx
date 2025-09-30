@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text } from "react-native";
 
 interface TimerClockProps {
-    startTimer: boolean;
-    onTimeUpdate?: (timeString: string) => void;
+  startTimer: boolean;
+  onTimeUpdate?: (seconds: number) => void;
 }
 
-export default function TimerClock({ startTimer, onTimeUpdate }: TimerClockProps) {
+export default function TimerClock({
+  startTimer,
+  onTimeUpdate,
+}: TimerClockProps) {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
     let interval = 0;
     if (startTimer) {
       interval = setInterval(() => {
-        setSeconds(prevSeconds => prevSeconds + 1);
+        setSeconds((prevSeconds) => prevSeconds + 1);
       }, 1000);
     } else if (!startTimer && seconds !== 0) {
       clearInterval(interval);
@@ -23,22 +26,20 @@ export default function TimerClock({ startTimer, onTimeUpdate }: TimerClockProps
 
   useEffect(() => {
     if (onTimeUpdate) {
-      const minutes = Math.floor(seconds / 60);
-      const timeString = minutes > 0 ? `${minutes} min` : `${seconds} sek`;
-      onTimeUpdate(timeString);
+      onTimeUpdate(seconds);
     }
   }, [seconds, onTimeUpdate]);
 
   const formatTime = (totalSeconds: number) => {
     const minutes = Math.floor(totalSeconds / 60);
     const secs = totalSeconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${minutes.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
   };
 
-  return (
-    <Text style={styles.timerText}>{formatTime(seconds)} </Text>
-  )
-} 
+  return <Text style={styles.timerText}>{formatTime(seconds)}</Text>;
+}
 
 const styles = StyleSheet.create({
   timerText: {

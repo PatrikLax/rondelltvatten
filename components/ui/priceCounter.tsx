@@ -3,7 +3,7 @@ import { StyleSheet, Text } from "react-native";
 
 interface PriceCounterProps {
   startPriceCounter: boolean;
-  onPriceUpdate?: (priceString: string) => void;
+  onPriceUpdate?: (cost: number) => void;
 }
 
 export default function PriceCounter({
@@ -19,7 +19,7 @@ export default function PriceCounter({
         setTotalCost((prevCost) => prevCost + 1);
       }, 8000);
     }
-    
+
     return () => {
       if (interval) {
         clearInterval(interval);
@@ -29,15 +29,11 @@ export default function PriceCounter({
 
   useEffect(() => {
     if (onPriceUpdate) {
-      onPriceUpdate(`${totalCost} kr`);
+      onPriceUpdate(totalCost);
     }
   }, [totalCost, onPriceUpdate]);
 
-  const formatPrice = () => {
-    return `${totalCost} kr`;
-  };
-
-  return <Text style={styles.priceText}>Totalkostnad: {formatPrice()}</Text>;
+  return <Text style={styles.priceText}>Totalkostnad: {totalCost} kr</Text>;
 }
 
 const styles = StyleSheet.create({

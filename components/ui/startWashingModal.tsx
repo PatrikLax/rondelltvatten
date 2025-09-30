@@ -11,7 +11,7 @@ import TimerClock from "./timer";
 interface StartWashingModalProps {
   visible: boolean;
   selectedSpot: number | null;
-  onFinishWashing: (washTime: string, cost: string) => void;
+  onFinishWashing: (washTimeSeconds: number, cost: number) => void;
 }
 
 export default function StartWashingModal({
@@ -21,12 +21,12 @@ export default function StartWashingModal({
 }: StartWashingModalProps) {
   const insets = useSafeAreaInsets();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [currentTime, setCurrentTime] = useState("0 min");
-  const [currentCost, setCurrentCost] = useState("0 kr");
+  const [washTimeSeconds, setWashTimeSeconds] = useState(0);
+  const [currentCost, setCurrentCost] = useState(10);
 
   const handleFinishWashing = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onFinishWashing(currentTime, currentCost);
+    onFinishWashing(washTimeSeconds, currentCost);
   };
 
   const handlePressAvsluta = () => {
@@ -45,12 +45,12 @@ export default function StartWashingModal({
         <Text style={styles.header}>Tvättplats {selectedSpot}</Text>
         <Text style={styles.text}>Välj program och börja tvätta</Text>
         <View style={styles.infoContainer}>
-          <TimerClock 
-            startTimer={true} 
-            onTimeUpdate={setCurrentTime}
+          <TimerClock
+            startTimer={true}
+            onTimeUpdate={(seconds) => setWashTimeSeconds(seconds)}
           />
-          <PriceCounter 
-            startPriceCounter={true} 
+          <PriceCounter
+            startPriceCounter={true}
             onPriceUpdate={setCurrentCost}
           />
         </View>
