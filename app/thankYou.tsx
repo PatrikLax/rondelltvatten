@@ -1,34 +1,37 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { router, useLocalSearchParams } from "expo-router";
 import LottieView from "lottie-react-native";
+import { useEffect, useState } from "react";
 import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useEffect } from "react";
 import { visitApi } from "../api/visit";
-import { Visit } from "../api/types";
 
 export default function ThankYou() {
   const { spotNumber, washTime, cost } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
+  const [visitCreated, setVisitCreated] = useState(false);
 
   useEffect(() => {
-    createVisit();
-  }, []);
+    if (!visitCreated) {
+      createVisit();
+    }
+  }, [visitCreated]);
 
   const createVisit = async () => {
     try {
-      const visitData: Visit = {
-        userId: 1,
-        spotNumber: spotNumber as string,
-        washTime: washTime as string,
-        cost: cost as string
+      const visitData = {
+        UserId: 1, // Riktig user inte implementerad ännu
+        SpotNumber: Number(spotNumber),
+        WashTime: Number(washTime),
+        Cost: Number(cost),
       };
 
       const newVisit = await visitApi.createVisit(visitData);
-      console.log('Visit skapad:', newVisit);
+      console.log("Visit skapad:", newVisit);
+      setVisitCreated(true);
     } catch (error) {
-      console.error('Fel vid skapande av visit:', error);
-      Alert.alert('Fel', 'Kunde inte spara besöket');
+      console.error("Fel vid skapande av visit:", error);
+      Alert.alert("Fel", "Kunde inte spara besöket");
     }
   };
 
