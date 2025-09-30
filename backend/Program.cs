@@ -5,17 +5,14 @@ using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Ladda .env-filen (endast i development)
 if (builder.Environment.IsDevelopment())
 {
     Env.Load();
 }
 
-// Läs environment variables
 var apiKey = Environment.GetEnvironmentVariable("API_KEY") ?? "default-dev-key";
 var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 
-// VIKTIGT: Lyssna på rätt port för Render
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -33,7 +30,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Skapa databasen om den inte finns
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -72,14 +68,14 @@ app.MapPost("/api/users", async (User user, AppDbContext db) =>
 app.MapGet("/api/visits", async (AppDbContext db) =>
     await db.Visits.Include(v => v.User).ToListAsync());
 
-app.MapPost("/api/visits", async (Visit visit, AppDbContext db) =>
+app.MapPost("/api/visits", async (CreateVisitDto dto, AppDbContext db) =>
 {
     var newVisit = new Visit
     {
-        UserId = visit.UserId,
-        SpotNumber = visit.SpotNumber,
-        WashTime = visit.WashTime,
-        Cost = visit.Cost,
+        UserId = dto.UserId,
+        SpotNumber = dto.SpotNumber,
+        WashTime = dto.WashTime,
+        Cost = dto.Cost,
         Timestamp = DateTime.Now
     };
 

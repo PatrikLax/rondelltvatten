@@ -5,6 +5,11 @@
 .env.local
 .env.*.local
 
+# HTTP request files med känslig data
+*.http
+request.http
+reqest2.http
+
 # .NET
 bin/
 obj/
