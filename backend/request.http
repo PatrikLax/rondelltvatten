@@ -1,0 +1,27 @@
+
+POST http://localhost:5103/api/users
+Content-Type: application/json
+
+{
+  "name": "Patrik Lax",
+  "email": "patrik.lax@test.se",
+  "phone": "0707-123456"
+}
+
+###
+POST http://localhost:5103/api/visits
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "Timestamp": "2024-06-20"
+}
+
+###
+GET http://192.168.1.134:5000/api/users
+###
+GET http://192.168.1.134:5000/api/visits
+###
+GET http://10.25.12.57:5000/api/users
+###
+GET http://10.25.12.57:5000/api/visits

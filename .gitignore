@@ -5,6 +5,14 @@
 .env.local
 .env.*.local
 
+# .NET
+bin/
+obj/
+out/
+*.dll
+*.pdb
+*.user
+
 # dependencies
 node_modules/
 
