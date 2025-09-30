@@ -68,20 +68,63 @@ app.MapPost("/api/users", async (User user, AppDbContext db) =>
 app.MapGet("/api/visits", async (AppDbContext db) =>
     await db.Visits.Include(v => v.User).ToListAsync());
 
-app.MapPost("/api/visits", async (CreateVisitDto dto, AppDbContext db) =>
-{
-    var newVisit = new Visit
-    {
-        UserId = dto.UserId,
-        SpotNumber = dto.SpotNumber,
-        WashTime = dto.WashTime,
-        Cost = dto.Cost,
-        Timestamp = DateTime.Now
-    };
+// app.MapPost("/api/visits", async (CreateVisitDto dto, AppDbContext db) =>
+// {
+//     var newVisit = new Visit
+//     {
+//         UserId = dto.UserId,
+//         SpotNumber = dto.SpotNumber,
+//         WashTime = dto.WashTime,
+//         Cost = dto.Cost,
+//         Timestamp = DateTime.Now
+//     };
 
-    db.Visits.Add(newVisit);
-    await db.SaveChangesAsync();
-    return Results.Created($"/api/visits/{newVisit.Id}", newVisit);
+//     db.Visits.Add(newVisit);
+//     await db.SaveChangesAsync();
+//     return Results.Created($"/api/visits/{newVisit.Id}", newVisit);
+// });
+
+app.MapPost("/api/visits", async (HttpContext context, AppDbContext db) =>
+{
+    try
+    {
+        // Läs raw body för att se vad som faktiskt kommer in
+        context.Request.EnableBuffering();
+        using var reader = new StreamReader(context.Request.Body);
+        var body = await reader.ReadToEndAsync();
+        context.Request.Body.Position = 0;
+
+        Console.WriteLine($"Received body: {body}");
+        Console.WriteLine($"Content-Type: {context.Request.ContentType}");
+
+        var dto = await context.Request.ReadFromJsonAsync<CreateVisitDto>();
+
+        if (dto == null)
+        {
+            Console.WriteLine("DTO is null");
+            return Results.BadRequest("Could not deserialize JSON");
+        }
+
+        Console.WriteLine($"DTO: UserId={dto.UserId}, SpotNumber={dto.SpotNumber}");
+
+        var newVisit = new Visit
+        {
+            UserId = dto.UserId,
+            SpotNumber = dto.SpotNumber,
+            WashTime = dto.WashTime,
+            Cost = dto.Cost,
+            Timestamp = DateTime.Now
+        };
+
+        db.Visits.Add(newVisit);
+        await db.SaveChangesAsync();
+        return Results.Created($"/api/visits/{newVisit.Id}", newVisit);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Exception: {ex}");
+        return Results.BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+    }
 });
 
 app.Run();
