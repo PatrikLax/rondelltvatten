@@ -14,4 +14,4 @@ COPY --from=build /app/out .
 EXPOSE 10000
 ENV ASPNETCORE_URLS=http://+:10000
 
-ENTRYPOINT ["dotnet", "RT_backend.dll"]
+ENTRYPOINT ["dotnet", "RT-backend.dll"]
