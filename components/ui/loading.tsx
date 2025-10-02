@@ -1,38 +1,37 @@
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { BlurView } from "expo-blur";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 
-interface LoadingProps {
-  message?: string;
-}
-
-export default function Loading({ message = "Laddar..." }: LoadingProps) {
+export default function Loading() {
   return (
-    <View style={styles.overlay}>
-      <View style={styles.container}>
+    <BlurView
+      intensity={30}
+      tint="dark"
+      experimentalBlurMethod="dimezisBlurView"
+      style={styles.modalContainer}
+    >
+      <View style={styles.spinnerContainer}>
         <ActivityIndicator size="large" color="#fff" />
-        <Text style={styles.text}>{message}</Text>
       </View>
-    </View>
+    </BlurView>
   );
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
+  modalContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: "center",
     alignItems: "center",
-    zIndex: 1000,
+    zIndex: 9999,
   },
-  container: {
-    backgroundColor: "#3ba2b6",
-    padding: 30,
-    borderRadius: 10,
-    alignItems: "center",
-    gap: 15,
-  },
-  text: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
+  spinnerContainer: {
+    transform: [{ scale: 2 }],
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 0,
   },
 });

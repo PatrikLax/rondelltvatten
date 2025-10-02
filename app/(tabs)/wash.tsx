@@ -251,7 +251,7 @@ export default function WashScreen() {
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />
-      {isCreatingVisit && <Loading message="Sparar besök..." />}
+      {isCreatingVisit && <Loading />}
       <StartWashingModal
         visible={startWashingVisible}
         selectedSpot={selectedSpot}
@@ -301,17 +301,5 @@ const styles = StyleSheet.create({
   pressablePressed: {
     opacity: 0.8,
     transform: [{ scale: 0.96 }],
-  },
-  loadingOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 1000,
-  },
-  loadingText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
   },
 });
