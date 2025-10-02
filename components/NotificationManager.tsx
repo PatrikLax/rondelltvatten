@@ -27,6 +27,7 @@ export default function NotificationManager() {
         trigger: {
           type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
           seconds: 30,
+          repeats: false,
         },
       });
     })();

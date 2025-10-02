@@ -21,6 +21,12 @@ export default function HomeScreen() {
           resizeMode="center"
         />
         <Text style={styles.header}>Rondelltvätten</Text>
+        <LottieView
+          source={require("../../assets/animations/Car-icon.json")}
+          autoPlay
+          loop
+          style={{ width: 300, height: 300, opacity: 0.8 }}
+        />
         <View style={styles.pressableContainer}>
           <Pressable
             style={({ pressed }) => [
