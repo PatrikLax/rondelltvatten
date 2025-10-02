@@ -1,6 +1,10 @@
+import type { VisitCreate } from "@/api/types";
+import { visitApi } from "@/api/visit";
 import ConfirmationModal from "@/components/ui/confirmModal";
+import Loading from "@/components/ui/loading";
 import StartWashingModal from "@/components/ui/startWashingModal";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { isAxiosError } from "axios";
 import * as Haptics from "expo-haptics";
 import * as Location from "expo-location";
 import { router } from "expo-router";
@@ -17,6 +21,7 @@ export default function WashScreen() {
   const [selectedSpot, setSelectedSpot] = useState<number | null>(null);
   const [washSpots, setWashSpots] = useState<WashSpotsState>({});
   const [isOnLocation, setIsOnLocation] = useState(false);
+  const [isCreatingVisit, setIsCreatingVisit] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -117,22 +122,78 @@ export default function WashScreen() {
     setSelectedSpot(null);
   };
 
-  const handleFinishWashing = (washTime: string, cost: string): void => {
-    if (selectedSpot !== null) {
-      toggleWashSpot(selectedSpot);
-    }
-    setStartWashingVisible(false);
+  const handleFinishWashing = async (
+    washTime: number,
+    cost: number
+  ): Promise<void> => {
+    if (selectedSpot === null) return;
 
-    router.replace({
-      pathname: "/thankYou",
-      params: {
-        spotNumber: selectedSpot,
+    const currentSpot = selectedSpot;
+
+    toggleWashSpot(currentSpot);
+    setStartWashingVisible(false);
+    setIsCreatingVisit(true);
+
+    try {
+      const visitData: VisitCreate = {
+        userId: 1,
+        spotNumber: currentSpot,
         washTime: washTime,
         cost: cost,
-      },
-    });
+      };
 
-    setSelectedSpot(null);
+      console.log("Skapar besök:", visitData);
+      const newVisit = await visitApi.createVisit(visitData);
+      console.log("Besök skapat:", newVisit);
+
+      setIsCreatingVisit(false);
+      setSelectedSpot(null);
+
+      router.replace({
+        pathname: "/thankYou",
+        params: {
+          spotNumber: currentSpot,
+          washTime: washTime,
+          cost: cost,
+        },
+      });
+    } catch (error) {
+      setIsCreatingVisit(false);
+
+      if (isAxiosError(error)) {
+        console.error("API Error:", error.response?.data);
+      }
+      console.error("Fel vid skapande av besök:", error);
+
+      Alert.alert(
+        "Kunde inte spara besöket",
+        "Tvätten är klar men besöket kunde inte sparas. Vill du försöka igen?",
+        [
+          {
+            text: "Försök igen",
+            onPress: () => {
+              setSelectedSpot(currentSpot);
+              handleFinishWashing(washTime, cost);
+            },
+          },
+          {
+            text: "Hoppa över",
+            onPress: () => {
+              setSelectedSpot(null);
+              router.replace({
+                pathname: "/thankYou",
+                params: {
+                  spotNumber: currentSpot,
+                  washTime: washTime,
+                  cost: cost,
+                  error: "not_saved",
+                },
+              });
+            },
+          },
+        ]
+      );
+    }
   };
 
   const getStatusIcon = (isOccupied: boolean): JSX.Element => {
@@ -190,6 +251,7 @@ export default function WashScreen() {
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />
+      {isCreatingVisit && <Loading message="Sparar besök..." />}
       <StartWashingModal
         visible={startWashingVisible}
         selectedSpot={selectedSpot}
@@ -239,5 +301,17 @@ const styles = StyleSheet.create({
   pressablePressed: {
     opacity: 0.8,
     transform: [{ scale: 0.96 }],
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  loadingText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });

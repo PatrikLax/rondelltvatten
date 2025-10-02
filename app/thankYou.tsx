@@ -1,16 +1,13 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import axios from "axios";
 import { router, useLocalSearchParams } from "expo-router";
 import LottieView from "lottie-react-native";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { visitApi } from "../api/visit";
 
 export default function ThankYou() {
-  const { spotNumber, washTime, cost } = useLocalSearchParams();
+  const { spotNumber, washTime, cost, error } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
-  const [visitCreated, setVisitCreated] = useState(false);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -21,40 +18,14 @@ export default function ThankYou() {
   const formattedCost = `${cost} kr`;
 
   useEffect(() => {
-    if (!visitCreated) {
-      createVisit();
+    if (error === "not_saved") {
+      Alert.alert(
+        "Varning",
+        "Ditt besök kunde inte sparas, men tvätten är slutförd.",
+        [{ text: "OK" }]
+      );
     }
-  }, [visitCreated]);
-
-  const createVisit = async () => {
-    try {
-      if (!spotNumber || !washTime || !cost) {
-        console.error("Missing required values!");
-        Alert.alert("Fel", "Saknar nödvändiga värden");
-        return;
-      }
-
-      const visitData = {
-        UserId: 1,
-        SpotNumber: Number(spotNumber),
-        WashTime: Number(washTime),
-        Cost: Number(cost),
-      };
-
-      console.log("Visit data to send:", visitData);
-
-      const newVisit = await visitApi.createVisit(visitData);
-      console.log("Visit skapad:", newVisit);
-      setVisitCreated(true);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log("Error response:", error.response?.data);
-        console.log("Error status:", error.response?.status);
-      }
-      console.error("Fel vid skapande av visit:", error);
-      Alert.alert("Fel", "Kunde inte spara besöket");
-    }
-  };
+  }, [error]);
 
   return (
     <View style={[styles.container, { paddingVertical: insets.top + 20 }]}>

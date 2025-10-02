@@ -6,10 +6,12 @@ export interface User {
 }
 
 export interface Visit {
-  id?: number;
+  id: number;
   userId: number;
-  spotNumber: string;
-  washTime: string;
-  cost: string;
-  timestamp?: string;
+  spotNumber: number;
+  washTime: number;
+  cost: number;
+  timestamp: string;
 }
+
+export type VisitCreate = Omit<Visit, "id" | "timestamp">;
