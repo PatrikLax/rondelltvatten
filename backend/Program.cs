@@ -73,9 +73,9 @@ app.MapPost("/api/visits", async (CreateVisitDto dto, AppDbContext db) =>
     var newVisit = new Visit
     {
         UserId = dto.UserId,
-        SpotNumber = dto.SpotNumber.ToString(),
-        WashTime = dto.WashTime.ToString(),
-        Cost = dto.Cost.ToString(),
+        SpotNumber = dto.SpotNumber,
+        WashTime = dto.WashTime,
+        Cost = dto.Cost,
         Timestamp = DateTime.Now
     };
 

@@ -6,9 +6,9 @@ public class Visit
 {
     public int Id { get; set; }
     public int UserId { get; set; }
-    public string SpotNumber { get; set; } = string.Empty;
-    public string WashTime { get; set; } = string.Empty;
-    public string Cost { get; set; } = string.Empty;
+    public int SpotNumber { get; set; }
+    public int WashTime { get; set; }
+    public decimal Cost { get; set; }
     public DateTime Timestamp { get; set; } = DateTime.Now;
 
     [JsonIgnore]
