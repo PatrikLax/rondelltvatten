@@ -1,5 +1,5 @@
 import { BlurView } from "expo-blur";
-import { Modal, Pressable, Text, View, StyleSheet } from "react-native";
+import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 interface ConfirmCloseWashModalProps {
   visible: boolean;
@@ -10,9 +10,8 @@ interface ConfirmCloseWashModalProps {
 export default function ConfirmCloseWashModal({
   visible,
   onConfirm,
-  onCancel
+  onCancel,
 }: ConfirmCloseWashModalProps) {
-
   return (
     <Modal
       animationType="fade"
@@ -45,12 +44,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  header: {
-    fontSize: 30,
-    marginVertical: 10,
-    fontWeight: "bold",
-    color: "#ffffff",
   },
   text: {
     fontSize: 20,
