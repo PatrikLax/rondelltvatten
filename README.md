@@ -3,35 +3,52 @@
 Detta är en redesign av en redan existerande app för rondelltvätten i Borås.
 Syftet med detta projekt är att skapa en bättre och modernare app.
 
-## Get started
+## Installation
 
-1. Install dependencies
+1. Installera beroenden
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Starta appen
 
    ```bash
    npm start
    ```
 
+## Backend:
+
+Minimal API skriven i C# (.NET) med Entity Framework Core och SQLite.
+
+Backenden är deployad på Render och körs som en container. Den publika adressen är:
+
+```bash
+https://rondelltvatten.onrender.com
+```
+
+Viktigt att känna till:
+
+- Tjänsten körs i en containeriserad miljö hos Render. Containerns filsystem är temporärt.
+- Eftersom applikationen använder SQLite lagras databasen i containerns filsystem. När containern stängs av, startas om eller går ner i viloläge kommer den lokala SQLite-filen rensas vilket innebär att data som skrivs till SQLite på Render inte är beständig.
+
+Övrigt:
+
+- API:et kräver att anrop innehåller en header `X-API-Key` med giltig nyckel (annars returneras 401).
+- I repot finns en `backend/reqest2.http` med exempelanrop som pekar mot den live-deployade backenden för enkel testning.
+- Om du vill köra backend lokalt (valfritt) finns instruktioner för det i README; lokalt körd backend använder också SQLite men påverkar endast din maskin.
+
 ## expo components
 
-- Haptics
-- BlurView
-- Location
-- Notifications
+```ts
+-Haptics - BlurView - Location - Notifications;
+```
 
 ## RN components
 
-- View
-- Text
-- Pressable
-- Stylesheet
-- Alert
-- Scrollview
+```ts
+-View - Text - Pressable - Stylesheet - Alert - Scrollview;
+```
 
 ## Krav för godkänt:
 
