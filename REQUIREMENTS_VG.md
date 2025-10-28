@@ -25,16 +25,21 @@ Nu kan du bygga appen med EAS och ladda hem filen när den är klar. Fyll sedan 
 **Fullständig Beskrivning (max 4000):** (ange här)
 
 Applikationens ikon och laddningsbild.
-![AppIkon (512x512)](./path/to/image.jpg);
-![SplashScreen (512x512)](./path/to/image.jpg);
+
+![AppIkon (512x512)](assets\images\icon.png);
+![SplashScreen (512x512)](assets\images\splash-icon.png);
 [Läs mer om dessa bilder här](https://docs.expo.dev/develop/user-interface/splash-screen-and-app-icon/).
 
 En omslagsbild som visas på olika ställen i butiken.
-![Funktionsbild (1024x500)](../path/to/image.jpg);
+![Funktionsbild (1024x500)](assets\images\Funktionsbild.png);
 
 Två till åtta fönsterbilder i formatet 16:9 eller 9:16 samt bredd och höjd mellan 320 och 3840 px.
-![Fönsterbild 1 Telefon](./path/to/image.jpg);
-![Fönsterbild 2 Telefon](./path/to/image.jpg);
+
+![Fönsterbild 1 Telefon](assets\images\Screenshot_20251028_152638_ExpoGo.jpg);
+
+![Fönsterbild 2 Telefon](assets\images\Screenshot_20251028_152927_ExpoGo.jpg);
+
+![Fönsterbild 2 Telefon](assets\images\Screenshot_20251028_152936_ExpoGo.jpg);
 
 [Binärfilen](./path/to/build.aab);
 ![Screenshot på expo bygget](./path/to/build.aab);
