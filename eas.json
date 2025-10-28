@@ -1,0 +1,16 @@
+{
+  "build": {
+    "production": {
+      "env": {
+        "API_KEY": "@API_KEY",
+        "API_URL": "@API_URL"
+      }
+    },
+    "development": {
+      "env": {
+        "API_KEY": "@API_KEY",
+        "API_URL": "@API_URL"
+      }
+    }
+  }
+}
