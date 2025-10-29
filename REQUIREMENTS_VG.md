@@ -18,29 +18,29 @@ Utöver det som ska anges i den här filen så ska du även lägga till en appik
 
 Nu kan du bygga appen med EAS och ladda hem filen när den är klar. Fyll sedan i nedanstående uppgifter som bevis på att du bara är några få steg ifrån att lansera din applikation på butiken.
 
-**Applikationens Namn:** (ange här)
+**Applikationens Namn:** Rondellentvätten
 
-**Kort Beskrivning (max 80):** (ange här)
+**Kort Beskrivning (max 80):** Boka och betala för biltvätt på Rondelltvätten — snabb, enkel och mobil.
 
-**Fullständig Beskrivning (max 4000):** (ange här)
+**Fullständig Beskrivning (max 4000):** Rondelltvätten är en mobilapp för kunder som ska tvätta sin bil på Rondelltvättens gör-det-själv tvätt. Med appen kan du starta och stoppa tvätten, betala direkt i appen och få en tidsuppdatering under processen. Appen sparar dina tidigare besök, hanterar användarprofil och skickar notifikationer när aktuella kampanjkoder är tillgängliga.
 
 Applikationens ikon och laddningsbild.
 
-![AppIkon (512x512)](assets\images\icon.png);
-![SplashScreen (512x512)](assets\images\splash-icon.png);
+![AppIkon (512x512)](./assets/images/icon.png);
+![SplashScreen (512x512)](./assets/images/splash-icon.png);
 [Läs mer om dessa bilder här](https://docs.expo.dev/develop/user-interface/splash-screen-and-app-icon/).
 
 En omslagsbild som visas på olika ställen i butiken.
-![Funktionsbild (1024x500)](assets\images\Funktionsbild.png);
+![Funktionsbild (1024x500)](./assets/images/Funktionsbild.png);
 
 Två till åtta fönsterbilder i formatet 16:9 eller 9:16 samt bredd och höjd mellan 320 och 3840 px.
 
-![Fönsterbild 1 Telefon](assets\images\Screenshot_20251028_152638_ExpoGo.jpg);
+![Fönsterbild 1 Telefon](./assets/images/Screenshot_20251028_152638_ExpoGo.jpg);
 
-![Fönsterbild 2 Telefon](assets\images\Screenshot_20251028_152927_ExpoGo.jpg);
+![Fönsterbild 2 Telefon](./assets/images/Screenshot_20251028_152927_ExpoGo.jpg);
 
-![Fönsterbild 2 Telefon](assets\images\Screenshot_20251028_152936_ExpoGo.jpg);
+![Fönsterbild 2 Telefon](./assets/images/Screenshot_20251028_152936_ExpoGo.jpg);
 
-[Binärfilen](./path/to/build.aab);
-![Screenshot på expo bygget](./path/to/build.aab);
+[Binärfilen](application-471c039f-c99b-467d-90c5-822ef15e8e15.aab);
+![Screenshot på expo bygget](./assets/build/expoPrintScreen.png);
 Tänk på att bilden måste visa både "Created By" och "Start Time".

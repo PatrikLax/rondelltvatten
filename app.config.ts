@@ -2,7 +2,7 @@ import "dotenv/config";
 import { ExpoConfig } from "expo/config";
 
 const config: ExpoConfig = {
-  name: "rondellen-tvatten",
+  name: "Rondellentvätten",
   slug: "rondellen-tvatten",
   version: "1.0.0",
   orientation: "portrait",
@@ -14,6 +14,7 @@ const config: ExpoConfig = {
     supportsTablet: true,
   },
   android: {
+    package: "se.patriklax.rondellentvatten",
     adaptiveIcon: {
       backgroundColor: "#3ba2b6",
       foregroundImage: "./assets/images/icon.png",
@@ -46,6 +47,7 @@ const config: ExpoConfig = {
           "Rondelltvätten behöver ha åtkomst till din position för att avgöra om du är vid tvätten",
       },
     ],
+    ["expo-web-browser"],
   ],
   experiments: {
     typedRoutes: true,
@@ -54,6 +56,9 @@ const config: ExpoConfig = {
   extra: {
     apiUrl: process.env.API_URL,
     apiKey: process.env.API_KEY,
+    eas: {
+      projectId: "01900df0-0960-4741-b3dd-48a6de86b552",
+    },
   },
 };
 
