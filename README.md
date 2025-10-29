@@ -62,6 +62,5 @@ Viktigt att känna till:
 - [x] Alla punkter för godkänt är uppfyllda
 - [x] Ytterligare en valfri extern modul används i projektet (ex. react-hook-form).
 - [x] Appen ska prata med ett Web-API för att hämta data.
-- [] Appen ska förberedas för lansering till en Appstore (Deadline samma dag som kursen
-  slutar)
-  .
+- [x] Appen ska förberedas för lansering till en Appstore (Deadline samma dag som kursen
+      slutar).
